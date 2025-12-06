@@ -218,7 +218,22 @@ const App = () => {
       </header>
       {isMenuOpen && <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setIsMenuOpen(false)}><div className="absolute right-0 top-16 w-64 bg-white rounded-l-2xl shadow-xl p-4" onClick={(e) => e.stopPropagation()}><nav className="space-y-1">{modules.map((module) => <button key={module.id} onClick={() => { setCurrentModule(module.id); setIsMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${currentModule === module.id ? 'bg-emerald-100 text-emerald-800' : 'text-gray-600 hover:bg-gray-100'}`}><module.icon size={20} /><span className="font-medium">{module.label}</span></button>)}</nav><div className="mt-4 pt-4 border-t border-gray-100"><button className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-xl"><Globe size={20} /><span className="font-medium">Tagalog</span><ChevronDown size={16} className="ml-auto" /></button></div></div></div>}
       <main className="max-w-lg mx-auto px-4 py-6"><CurrentModuleComponent /></main>
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 pb-safe"><div className="max-w-lg mx-auto px-2 py-2 flex justify-around">{modules.slice(0, 5).map((module) => <button key={module.id} onClick={() => setCurrentModule(module.id)} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-colors ${currentModule === module.id ? 'text-emerald-800' : 'text-gray-400 hover:text-gray-600'}`}><module.icon size={24} /><span className="text-xs font-medium">{module.label.split(' ')[0]}</span></button>)}</div></nav>
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 pb-safe">
+        <div className="max-w-lg w-full mx-auto px-2 py-2 overflow-x-auto scrollbar-hide">
+          <div className="flex flex-nowrap gap-1">
+            {modules.map((module) => (
+              <button
+                key={module.id}
+                onClick={() => setCurrentModule(module.id)}
+                className={`flex-none flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-colors ${currentModule === module.id ? 'text-emerald-800' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                <module.icon size={24} />
+                <span className="text-xs font-medium">{module.label.split(' ')[0]}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
       <div className="h-20" />
     </div>
   );
