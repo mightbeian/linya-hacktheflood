@@ -6,7 +6,7 @@ import {
   TrendingUp, TrendingDown, Award, Flag,
   Share2, Globe,
   UserCheck, ShieldCheck, CheckCircle,
-  QrCode, Fingerprint, Cloud, MapPinned, Building,
+  QrCode, Fingerprint, Cloud, Building,
   Utensils, Activity,
   Layers, PieChart, Heart, Target,
   Wifi, Droplets, ChevronDown
@@ -73,7 +73,7 @@ const SafeSpaceModule = () => {
     <div className="space-y-6">
       <div className="relative h-64 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center"><MapPinned className="mx-auto text-emerald-600 mb-2" size={48} /><p className="text-emerald-800 font-medium">Interactive Map</p><p className="text-emerald-600 text-sm">Offline-ready with downloaded tiles</p></div>
+          <div className="text-center"><MapPin className="mx-auto text-emerald-600 mb-2" size={48} /><p className="text-emerald-800 font-medium">Interactive Map</p><p className="text-emerald-600 text-sm">Offline-ready with downloaded tiles</p></div>
         </div>
         <div className="absolute top-1/4 left-1/3 w-4 h-4 bg-orange-500 rounded-full animate-pulse" />
         <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-blue-500 rounded-full animate-pulse" />
