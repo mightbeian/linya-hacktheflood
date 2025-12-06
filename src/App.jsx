@@ -138,7 +138,7 @@ const translations = {
     safespace: 'SafeSpace',
     streetconnect: 'StreetConnect',
     reportOfficials: 'Report Officials',
-    citizenScore: 'Citizen Score',
+    citizenScore: 'Profile',
     offline: 'Offline',
     greeting: 'Good Morning!',
     communityHappening: "Here's what's happening in your community",
@@ -208,9 +208,9 @@ const translations = {
     iPledge: 'I Pledge to Stay in Line',
     howIntegrityWorks: 'How Your Integrity Score Works',
     greenFlagsPlus: 'Green Flags (+)',
-    greenFlagsDesc: 'Earned when you complete clean transactions, verify aid distribution, or report corruption',
+    greenFlagsDesc: 'Earned when fellow users resonate with your posts, validating your shared experiences',
     redFlagsMinus: 'Red Flags (-)',
-    redFlagsDesc: 'Given for suspicious behavior, unverified transactions, or reports marked as false',
+    redFlagsDesc: 'Given when users find your posts questionable, signaling concerns about credibility',
     yourFlagHistory: 'Your Flag History',
     greenFlags: 'Green Flags',
     redFlags: 'Red Flags',
@@ -380,7 +380,7 @@ const translations = {
     safespace: 'SafeSpace',
     streetconnect: 'StreetConnect',
     reportOfficials: 'Ireport ang mga Opisyal',
-    citizenScore: 'Mamamayang Puntos',
+    citizenScore: 'Profile',
     offline: 'Walang Internet',
     greeting: 'Magandang Umaga!',
     communityHappening: 'Naganap sa inyong komunidad',
@@ -450,9 +450,9 @@ const translations = {
     iPledge: 'Ako ay Nangangako na Manatili sa Tamang Linya',
     howIntegrityWorks: 'Paano Gumagana ang Inyong Puntos ng Integridad',
     greenFlagsPlus: 'Berdeng Bandila (+)',
-    greenFlagsDesc: 'Nakukuha kapag nakumpleto ang malinis na transaksyon, nag-verify ng aid distribution, o nag-report ng korupsyon',
+    greenFlagsDesc: 'Nakukuha kapag ang ibang users ay sumasang-ayon sa inyong mga post, na nagpapatunay ng inyong karanasan',
     redFlagsMinus: 'Pulang Bandila (-)',
-    redFlagsDesc: 'Ibinibigay para sa kahina-hinalang gawi, hindi napatunayan na transaksyon, o mga ulat na minarkahan bilang mali',
+    redFlagsDesc: 'Ibinibigay kapag ang mga users ay may duda sa inyong mga post, na nagpapahiwatig ng alalahanin sa kredibilidad',
     yourFlagHistory: 'Inyong Kasaysayan ng Bandila',
     greenFlags: 'Berdeng Bandila',
     redFlags: 'Pulang Bandila',
@@ -1794,51 +1794,6 @@ const CitizenAccountabilityModule = () => {
         </div>
       </Card>
 
-      {/* Impact on Perception */}
-      <Card className="p-4 bg-purple-50 border-purple-200">
-        <h4 className="font-semibold text-purple-900 mb-3 flex items-center gap-2">
-          <Users size={20} />
-          {t.howOthersSeeYou}
-        </h4>
-        <div className="space-y-3">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <CheckCircle className="text-green-600" size={16} />
-            </div>
-            <div className="text-sm">
-              <p className="font-medium text-gray-900">{t.highScore}</p>
-              <p className="text-gray-600">{t.highScoreVerified}</p>
-              <p className="text-gray-600">{t.highScorePriority}</p>
-              <p className="text-gray-600">{t.highScoreWeight}</p>
-              <p className="text-gray-600">{t.highScoreTrusted}</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <AlertTriangle className="text-yellow-600" size={16} />
-            </div>
-            <div className="text-sm">
-              <p className="font-medium text-gray-900">{t.mediumScore}</p>
-              <p className="text-gray-600">{t.mediumScoreVerification}</p>
-              <p className="text-gray-600">{t.mediumScoreProof}</p>
-              <p className="text-gray-600">{t.mediumScoreWitness}</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <X className="text-red-600" size={16} />
-            </div>
-            <div className="text-sm">
-              <p className="font-medium text-gray-900">{t.lowScore}</p>
-              <p className="text-gray-600">{t.lowScoreFlagged}</p>
-              <p className="text-gray-600">{t.lowScoreLimited}</p>
-              <p className="text-gray-600">{t.lowScoreMandatory}</p>
-              <p className="text-gray-600">{t.lowScoreRestrictions}</p>
-            </div>
-          </div>
-        </div>
-      </Card>
-
       {/* Recent Transactions */}
       <Card className="p-4">
         <h4 className="font-semibold text-gray-900 mb-3">Recent Transactions</h4>
@@ -2271,7 +2226,7 @@ const App = () => {
       <div className="min-h-screen bg-gradient-to-b from-stone-50 to-stone-100">
         <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100">
           <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3"><div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-xl flex items-center justify-center"><span className="text-white font-bold text-lg">L</span></div><div><h1 className="font-bold text-gray-900 leading-none">{t.appName}</h1><p className="text-xs text-gray-500">{t.tagline}</p></div></div>
+            <div className="flex items-center gap-3"><img src="/icons/linyalogononame.png" alt="LiNYA" className="w-10 h-10 rounded-xl object-cover" /><div><h1 className="font-bold text-gray-900 leading-none">{t.appName}</h1><p className="text-xs text-gray-500">{t.tagline}</p></div></div>
             <div className="flex items-center gap-2">{!isOnline && <Badge variant="warning" size="sm">{t.offline}</Badge>}<button onClick={() => setIsMenuOpen(!isMenuOpen)} className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">{isMenuOpen ? <X size={20} /> : <Menu size={20} />}</button></div>
           </div>
         </header>
