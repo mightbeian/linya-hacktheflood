@@ -9,7 +9,7 @@ import {
   QrCode, Fingerprint, Cloud, Building,
   Utensils, Activity,
   Layers, PieChart, Heart, Target,
-  Wifi, Droplets, ChevronDown, Check, MessageCircle
+  Wifi, Droplets, ChevronDown, Check
 } from 'lucide-react';
 
 // Language Context
@@ -276,6 +276,7 @@ const translations = {
     readAgainLater: 'Read Again Later',
     pledgeFinePrint: 'By taking this pledge, you commit to maintaining ethical behavior in all public transactions. This pledge is voluntary but binding to your personal integrity and community reputation.',
     searchJobs: 'Search jobs near you...',
+    today: 'Today',
     construction: 'Construction',
     delivery: 'Delivery',
     events: 'Events',
@@ -518,6 +519,7 @@ const translations = {
     readAgainLater: 'Basahin Muli Mamaya',
     pledgeFinePrint: 'Sa pamamagitan ng paggawa ng pangakong ito, kayo ay nangangako na papanatilihin ang etikal na pag-uugali sa lahat ng pampublikong transaksyon. Ang pangakong ito ay boluntaryo ngunit nakakabit sa inyong personal na integridad at reputasyon sa komunidad.',
     searchJobs: 'Maghanap ng trabaho malapit sa inyo...',
+    today: 'Ngayon',
     construction: 'Konstruksyon',
     delivery: 'Delivery',
     events: 'Mga Event',
@@ -816,492 +818,30 @@ const SafeSpaceModule = () => {
 };
 
 // StreetConnect Module
-// StreetConnect Module - Progressive Identity Pathway
-// Designed for Metro Manila's unhoused/precarious populations
-// 4-tier system allows gradual trust-building without requiring gov ID upfront
 const StreetConnectModule = () => {
-  const { t, language } = useLanguage();
-  const [currentTier, setCurrentTier] = useState(0); // 0 = anonymous, 1 = phone verified, 2 = partner attested, 3 = gov ID verified
-  const [activeTab, setActiveTab] = useState('pathway');
-  const [showOTPModal, setShowOTPModal] = useState(false);
-  const [showSelfieCapture, setShowSelfieCapture] = useState(false);
-  const [showPartnerAttestation, setShowPartnerAttestation] = useState(false);
-  const [showGovIDUpload, setShowGovIDUpload] = useState(false);
-  const [showDocumentVault, setShowDocumentVault] = useState(false);
-  
-  // Form states for Tier 1
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otpCode, setOtpCode] = useState('');
-  const [selfieUploaded, setSelfieUploaded] = useState(false);
-  const [livenessChecked, setLivenessChecked] = useState(false);
-  const [fullName, setFullName] = useState('');
-  const [age, setAge] = useState('');
-  const [city, setCity] = useState('');
-  const [bantayLagayID, setBantayLagayID] = useState('');
-  
-  // Form states for Tier 2
-  const [partnerRole, setPartnerRole] = useState('');
-  const [attestationQR, setAttestationQR] = useState('');
-  
-  // Document Vault
-  const [documents, setDocuments] = useState([
-    { id: 1, type: 'birth_certificate', name: 'Birth Certificate', uploaded: false, status: 'missing' },
-    { id: 2, type: 'barangay_cert', name: 'Barangay Certificate', uploaded: false, status: 'missing' },
-    { id: 3, type: 'shelter_intake', name: 'Shelter Intake Form', uploaded: false, status: 'missing' }
-  ]);
-
-  // Simulate Tier 1 completion (Phone + Selfie + Basic Info)
-  const completeTier1 = () => {
-    const generatedID = `BL-${Date.now().toString().slice(-6)}`;
-    setBantayLagayID(generatedID);
-    setCurrentTier(1);
-    setShowOTPModal(false);
-    setShowSelfieCapture(false);
-  };
-
-  // Simulate Tier 2 completion (Partner Attestation)
-  const completeTier2 = () => {
-    const qrCode = `ATTEST-${Date.now().toString().slice(-8)}`;
-    setAttestationQR(qrCode);
-    setCurrentTier(2);
-    setShowPartnerAttestation(false);
-  };
-
-  // Simulate Tier 3 completion (Gov ID)
-  const completeTier3 = () => {
-    setCurrentTier(3);
-    setShowGovIDUpload(false);
-  };
+  const [activeTab, setActiveTab] = useState('identity');
+  const documents = [{ name: 'PhilSys ID', status: 'verified', icon: UserCheck }, { name: 'Barangay Certificate', status: 'verified', expiry: '2025-06-15', icon: FileText }, { name: 'Medical Records', status: 'pending', icon: Activity }, { name: 'Birth Certificate', status: 'verified', icon: FileText }];
+  const applications = [{ program: '4Ps Cash Transfer', status: 'approved', agency: 'DSWD', date: '2024-01-10' }, { program: 'Housing Assistance', status: 'pending', agency: 'NHA', date: '2024-01-08' }, { program: 'Skills Training', status: 'interview', agency: 'TESDA', date: '2024-01-05' }];
 
   return (
     <div className="space-y-6">
-      {/* Header Card */}
-      <Card className="p-6 bg-gradient-to-br from-purple-800 to-purple-900 text-white">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-2xl font-bold">{language === 'en' ? 'StreetConnect Identity' : 'StreetConnect Identity'}</h2>
-            <p className="text-purple-200 text-sm mt-1">
-              {language === 'en' ? 'Build your digital identity step by step' : 'Bumuo ng iyong digital identity nang unti-unti'}
-            </p>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-900 p-6 text-white">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-700/30 rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="relative">
+          <div className="flex items-start justify-between">
+            <div><p className="text-emerald-300 text-sm font-medium">LiNYA Digital Identity</p><h2 className="text-2xl font-bold mt-1">Juan Dela Cruz</h2><p className="text-emerald-200 text-sm mt-1">ID: LNY-2024-XXXXX</p></div>
+            <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center"><Fingerprint size={32} /></div>
           </div>
-          <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
-            <Fingerprint size={32} />
-          </div>
+          <div className="mt-6 flex items-center gap-4"><div className="flex items-center gap-2"><ShieldCheck size={16} className="text-emerald-300" /><span className="text-sm">Verified</span></div><div className="flex items-center gap-2"><Cloud size={16} className="text-emerald-300" /><span className="text-sm">Backed Up</span></div></div>
+          <div className="mt-4 flex gap-3"><Button variant="secondary" size="sm" icon={QrCode}>Show QR</Button><Button variant="ghost" size="sm" icon={Share2} className="text-white hover:bg-white/10">Share</Button></div>
         </div>
-        
-        {/* Tier Progress */}
-        <div className="flex items-center gap-2 mt-4">
-          {[0, 1, 2, 3].map((tier) => (
-            <div key={tier} className={`flex-1 h-2 rounded-full ${currentTier >= tier ? 'bg-purple-300' : 'bg-white/20'}`} />
-          ))}
-        </div>
-        <p className="text-purple-200 text-sm mt-2">
-          {language === 'en' ? `Tier ${currentTier} of 3` : `Tier ${currentTier} ng 3`}
-        </p>
-      </Card>
-
-      {/* Tabs */}
-      <div className="flex gap-1 bg-gray-100 p-1 rounded-xl">
-        <button
-          onClick={() => setActiveTab('pathway')}
-          className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${activeTab === 'pathway' ? 'bg-white shadow text-purple-800' : 'text-gray-600'}`}
-        >
-          {language === 'en' ? 'Pathway' : 'Daan'}
-        </button>
-        <button
-          onClick={() => setActiveTab('vault')}
-          className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${activeTab === 'vault' ? 'bg-white shadow text-purple-800' : 'text-gray-600'}`}
-        >
-          {language === 'en' ? 'Documents' : 'Dokumento'}
-        </button>
       </div>
-
-      {/* Identity Pathway Tab */}
-      {activeTab === 'pathway' && (
-        <div className="space-y-4">
-          {/* Tier 0: Anonymous */}
-          <Card className={`p-4 ${currentTier === 0 ? 'border-2 border-purple-500' : ''}`}>
-            <div className="flex items-start gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${currentTier > 0 ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-400'}`}>
-                {currentTier > 0 ? <CheckCircle size={20} /> : <span className="font-bold">0</span>}
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">{language === 'en' ? 'Tier 0: Anonymous Access' : 'Tier 0: Anonymous na Access'}</h4>
-                <p className="text-sm text-gray-600 mt-1">
-                  {language === 'en' ? 'View public info, no sign-up needed' : 'Tingnan ang public info, walang sign-up'}
-                </p>
-                {currentTier === 0 && (
-                  <p className="text-xs text-purple-600 mt-2 font-medium">{language === 'en' ? '→ Current tier' : '→ Kasalukuyang tier'}</p>
-                )}
-              </div>
-            </div>
-          </Card>
-
-          {/* Tier 1: Phone + Selfie + Basic Info */}
-          <Card className={`p-4 ${currentTier === 1 ? 'border-2 border-purple-500' : ''}`}>
-            <div className="flex items-start gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${currentTier > 1 ? 'bg-emerald-100 text-emerald-600' : currentTier === 1 ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-400'}`}>
-                {currentTier > 1 ? <CheckCircle size={20} /> : <span className="font-bold">1</span>}
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">{language === 'en' ? 'Tier 1: Basic Identity' : 'Tier 1: Basic Identity'}</h4>
-                <p className="text-sm text-gray-600 mt-1">
-                  {language === 'en' ? 'Phone OTP + Selfie + Name/Age/City' : 'Phone OTP + Selfie + Pangalan/Edad/Lungsod'}
-                </p>
-                <ul className="text-xs text-gray-500 mt-2 space-y-1 list-disc list-inside">
-                  <li>{language === 'en' ? 'Get Bantay Lagay ID' : 'Makakuha ng Bantay Lagay ID'}</li>
-                  <li>{language === 'en' ? 'Report issues in SafeSpace' : 'Mag-report sa SafeSpace'}</li>
-                  <li>{language === 'en' ? 'Access emergency contacts' : 'Access sa emergency contacts'}</li>
-                </ul>
-                {currentTier === 1 && bantayLagayID && (
-                  <div className="mt-3 p-2 bg-purple-50 rounded border border-purple-200">
-                    <p className="text-xs font-medium text-purple-900">{language === 'en' ? 'Your Bantay Lagay ID:' : 'Iyong Bantay Lagay ID:'} {bantayLagayID}</p>
-                  </div>
-                )}
-                {currentTier === 0 && (
-                  <Button className="mt-3 w-full" size="sm" onClick={() => setShowOTPModal(true)}>
-                    {language === 'en' ? 'Start Verification' : 'Simulan ang Verification'}
-                  </Button>
-                )}
-                {currentTier === 1 && (
-                  <p className="text-xs text-purple-600 mt-2 font-medium">{language === 'en' ? '→ Current tier' : '→ Kasalukuyang tier'}</p>
-                )}
-              </div>
-            </div>
-          </Card>
-
-          {/* Tier 2: Partner Attestation */}
-          <Card className={`p-4 ${currentTier === 2 ? 'border-2 border-purple-500' : currentTier < 1 ? 'opacity-50' : ''}`}>
-            <div className="flex items-start gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${currentTier > 2 ? 'bg-emerald-100 text-emerald-600' : currentTier === 2 ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-400'}`}>
-                {currentTier > 2 ? <CheckCircle size={20} /> : <span className="font-bold">2</span>}
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">{language === 'en' ? 'Tier 2: Community Verified' : 'Tier 2: Napatunayan ng Komunidad'}</h4>
-                <p className="text-sm text-gray-600 mt-1">
-                  {language === 'en' ? 'Attested by NGO/Shelter/Partner' : 'Napatunayan ng NGO/Shelter/Partner'}
-                </p>
-                <ul className="text-xs text-gray-500 mt-2 space-y-1 list-disc list-inside">
-                  <li>{language === 'en' ? 'Apply for aid programs' : 'Mag-apply sa aid programs'}</li>
-                  <li>{language === 'en' ? 'Get "Community Verified" badge' : 'Makakuha ng "Community Verified" badge'}</li>
-                  <li>{language === 'en' ? 'Access job board' : 'Access sa job board'}</li>
-                </ul>
-                {currentTier === 1 && (
-                  <Button className="mt-3 w-full" size="sm" onClick={() => setShowPartnerAttestation(true)}>
-                    {language === 'en' ? 'Request Attestation' : 'Humingi ng Attestation'}
-                  </Button>
-                )}
-                {currentTier === 2 && attestationQR && (
-                  <div className="mt-3 p-2 bg-emerald-50 rounded border border-emerald-200 flex items-center gap-2">
-                    <Badge variant="success">{language === 'en' ? 'Community Verified' : 'Verified ng Komunidad'}</Badge>
-                    <QrCode size={16} className="text-emerald-600" />
-                  </div>
-                )}
-                {currentTier === 2 && (
-                  <p className="text-xs text-purple-600 mt-2 font-medium">{language === 'en' ? '→ Current tier' : '→ Kasalukuyang tier'}</p>
-                )}
-              </div>
-            </div>
-          </Card>
-
-          {/* Tier 3: Gov ID */}
-          <Card className={`p-4 ${currentTier === 3 ? 'border-2 border-purple-500' : currentTier < 2 ? 'opacity-50' : ''}`}>
-            <div className="flex items-start gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${currentTier === 3 ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-400'}`}>
-                {currentTier === 3 ? <CheckCircle size={20} /> : <span className="font-bold">3</span>}
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">{language === 'en' ? 'Tier 3: Government Verified' : 'Tier 3: Napatunayan ng Gobyerno'}</h4>
-                <p className="text-sm text-gray-600 mt-1">
-                  {language === 'en' ? 'PhilSys/Postal ID/Valid Gov ID' : 'PhilSys/Postal ID/Valid Gov ID'}
-                </p>
-                <ul className="text-xs text-gray-500 mt-2 space-y-1 list-disc list-inside">
-                  <li>{language === 'en' ? 'Full access to all features' : 'Buong access sa lahat ng features'}</li>
-                  <li>{language === 'en' ? 'Priority for cash programs' : 'Priority sa cash programs'}</li>
-                  <li>{language === 'en' ? 'Can submit Anti-Corruption reports' : 'Pwedeng mag-submit ng Anti-Corruption reports'}</li>
-                </ul>
-                {currentTier === 2 && (
-                  <Button className="mt-3 w-full" size="sm" onClick={() => setShowGovIDUpload(true)}>
-                    {language === 'en' ? 'Upload Gov ID' : 'I-upload ang Gov ID'}
-                  </Button>
-                )}
-                {currentTier === 3 && (
-                  <div className="mt-3">
-                    <Badge variant="success">{language === 'en' ? 'Government Verified ✓' : 'Napatunayan ng Gobyerno ✓'}</Badge>
-                    <p className="text-xs text-purple-600 mt-2 font-medium">{language === 'en' ? '→ Current tier (Highest)' : '→ Kasalukuyang tier (Pinakamataas)'}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Document Vault Tab */}
-      {activeTab === 'vault' && (
-        <div className="space-y-4">
-          <Card className="p-4 bg-purple-50 border-purple-200">
-            <div className="flex items-center gap-3">
-              <FileText className="text-purple-600" size={20} />
-              <div>
-                <h4 className="font-medium text-purple-900">{language === 'en' ? 'Secure Document Vault' : 'Secure Document Vault'}</h4>
-                <p className="text-sm text-purple-700">
-                  {language === 'en' ? 'Store important documents safely' : 'Ligtas na imbakan ng mahahalagang dokumento'}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          {documents.map((doc) => (
-            <Card key={doc.id} className="p-4">
-              <div className="flex items-center gap-4">
-                <div className={`p-2 rounded-xl ${doc.uploaded ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-400'}`}>
-                  <FileText size={20} />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">{doc.name}</h4>
-                  <p className="text-xs text-gray-500">
-                    {doc.uploaded ? (language === 'en' ? 'Uploaded' : 'Na-upload') : (language === 'en' ? 'Not uploaded' : 'Hindi pa na-upload')}
-                  </p>
-                </div>
-                <Badge variant={doc.uploaded ? 'success' : 'outline'}>
-                  {doc.uploaded ? (language === 'en' ? 'Stored' : 'Naka-store') : (language === 'en' ? 'Missing' : 'Wala')}
-                </Badge>
-              </div>
-            </Card>
-          ))}
-          
-          <Button variant="outline" icon={Upload} className="w-full" onClick={() => setShowDocumentVault(true)}>
-            {language === 'en' ? 'Upload Document' : 'Mag-upload ng Dokumento'}
-          </Button>
-        </div>
-      )}
-
-      {/* OTP Modal for Tier 1 */}
-      {showOTPModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setShowOTPModal(false)}>
-          <Card className="max-w-md w-full" onClick={(e) => e.stopPropagation()}>
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-gray-900">{language === 'en' ? 'Phone Verification' : 'Phone Verification'}</h3>
-              <button onClick={() => setShowOTPModal(false)} className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'en' ? 'Phone Number' : 'Phone Number'}</label>
-                <input
-                  type="tel"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="+63 XXX XXX XXXX"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'en' ? 'OTP Code (Simulated)' : 'OTP Code (Simulated)'}</label>
-                <input
-                  type="text"
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value)}
-                  placeholder="123456"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                />
-                <p className="text-xs text-gray-500 mt-1">{language === 'en' ? 'In production: Real SMS OTP' : 'Sa production: Tunay na SMS OTP'}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'en' ? 'Full Name' : 'Buong Pangalan'}</label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder={language === 'en' ? 'Juan Dela Cruz' : 'Juan Dela Cruz'}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'en' ? 'Age' : 'Edad'}</label>
-                  <input
-                    type="number"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                    placeholder="25"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'en' ? 'City' : 'Lungsod'}</label>
-                  <input
-                    type="text"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder="Manila"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <button
-                  onClick={() => setShowSelfieCapture(true)}
-                  className={`w-full py-2 px-4 rounded-lg border-2 ${selfieUploaded ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-gray-300 bg-white'}`}
-                >
-                  {selfieUploaded ? (language === 'en' ? '✓ Selfie Uploaded' : '✓ Selfie Na-upload') : (language === 'en' ? 'Upload Selfie' : 'Mag-upload ng Selfie')}
-                </button>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={livenessChecked}
-                    onChange={(e) => setLivenessChecked(e.target.checked)}
-                    className="w-4 h-4"
-                  />
-                  <span className="text-sm text-gray-700">{language === 'en' ? 'Liveness check passed (simulated)' : 'Liveness check passed (simulated)'}</span>
-                </label>
-              </div>
-              <Button
-                className="w-full"
-                onClick={completeTier1}
-                disabled={!phoneNumber || !otpCode || !fullName || !age || !city || !selfieUploaded || !livenessChecked}
-              >
-                {language === 'en' ? 'Complete Tier 1' : 'Kumpletuhin ang Tier 1'}
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Selfie Capture Simulation */}
-      {showSelfieCapture && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setShowSelfieCapture(false)}>
-          <Card className="max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-gray-900">{language === 'en' ? 'Selfie Capture' : 'Kunan ng Selfie'}</h3>
-              <button onClick={() => setShowSelfieCapture(false)} className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-6 text-center space-y-4">
-              <div className="w-48 h-48 mx-auto bg-gray-200 rounded-full flex items-center justify-center">
-                <Camera size={64} className="text-gray-400" />
-              </div>
-              <p className="text-sm text-gray-600">{language === 'en' ? 'In production: Camera access for live selfie' : 'Sa production: Camera access para sa live selfie'}</p>
-              <Button
-                className="w-full"
-                onClick={() => {
-                  setSelfieUploaded(true);
-                  setShowSelfieCapture(false);
-                }}
-              >
-                {language === 'en' ? 'Simulate Capture' : 'Simulate Capture'}
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Partner Attestation Modal */}
-      {showPartnerAttestation && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setShowPartnerAttestation(false)}>
-          <Card className="max-w-md w-full" onClick={(e) => e.stopPropagation()}>
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-gray-900">{language === 'en' ? 'Partner Attestation' : 'Partner Attestation'}</h3>
-              <button onClick={() => setShowPartnerAttestation(false)} className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-6 space-y-4">
-              <p className="text-sm text-gray-600">
-                {language === 'en' 
-                  ? 'Ask an NGO worker, shelter staff, or partner to scan your QR and verify your identity.' 
-                  : 'Hilingin sa NGO worker, shelter staff, o partner na i-scan ang iyong QR at i-verify ang iyong identity.'}
-              </p>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'en' ? 'Partner Role' : 'Partner Role'}</label>
-                <select
-                  value={partnerRole}
-                  onChange={(e) => setPartnerRole(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                >
-                  <option value="">{language === 'en' ? 'Select...' : 'Pumili...'}</option>
-                  <option value="ngo">NGO Worker</option>
-                  <option value="shelter">Shelter Staff</option>
-                  <option value="partner">Community Partner</option>
-                </select>
-              </div>
-              <div className="p-4 bg-gray-100 rounded-lg text-center">
-                <QrCode size={120} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-xs text-gray-500">{language === 'en' ? 'Show this to partner for scanning' : 'Ipakita ito sa partner para i-scan'}</p>
-              </div>
-              <Button
-                className="w-full"
-                onClick={completeTier2}
-                disabled={!partnerRole}
-              >
-                {language === 'en' ? 'Simulate Attestation' : 'Simulate Attestation'}
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Gov ID Upload Modal */}
-      {showGovIDUpload && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setShowGovIDUpload(false)}>
-          <Card className="max-w-md w-full" onClick={(e) => e.stopPropagation()}>
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-gray-900">{language === 'en' ? 'Government ID Upload' : 'Government ID Upload'}</h3>
-              <button onClick={() => setShowGovIDUpload(false)} className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-6 space-y-4">
-              <p className="text-sm text-gray-600">
-                {language === 'en' 
-                  ? 'Upload a valid government-issued ID (PhilSys, Postal ID, etc.)' 
-                  : 'Mag-upload ng valid government-issued ID (PhilSys, Postal ID, atbp.)'}
-              </p>
-              <div className="p-8 border-2 border-dashed border-gray-300 rounded-lg text-center">
-                <Upload size={48} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600">{language === 'en' ? 'Click to upload or drag & drop' : 'Click para mag-upload o drag & drop'}</p>
-              </div>
-              <Button className="w-full" onClick={completeTier3}>
-                {language === 'en' ? 'Simulate Upload' : 'Simulate Upload'}
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Document Vault Upload Modal */}
-      {showDocumentVault && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setShowDocumentVault(false)}>
-          <Card className="max-w-md w-full" onClick={(e) => e.stopPropagation()}>
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-gray-900">{language === 'en' ? 'Upload Document' : 'Mag-upload ng Dokumento'}</h3>
-              <button onClick={() => setShowDocumentVault(false)} className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{language === 'en' ? 'Document Type' : 'Uri ng Dokumento'}</label>
-                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                  <option>{language === 'en' ? 'Birth Certificate' : 'Birth Certificate'}</option>
-                  <option>{language === 'en' ? 'Barangay Certificate' : 'Barangay Certificate'}</option>
-                  <option>{language === 'en' ? 'Shelter Intake Form' : 'Shelter Intake Form'}</option>
-                </select>
-              </div>
-              <div className="p-8 border-2 border-dashed border-gray-300 rounded-lg text-center">
-                <Upload size={48} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600">{language === 'en' ? 'Upload document' : 'Mag-upload ng dokumento'}</p>
-              </div>
-              <Button className="w-full" onClick={() => setShowDocumentVault(false)}>
-                {language === 'en' ? 'Close' : 'Isara'}
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
+      <div className="flex gap-1 bg-gray-100 p-1 rounded-xl">
+        {['identity', 'documents', 'applications'].map((tab) => <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all capitalize ${activeTab === tab ? 'bg-white shadow text-emerald-800' : 'text-gray-600 hover:text-gray-900'}`}>{tab}</button>)}
+      </div>
+      {activeTab === 'documents' && <div className="space-y-3">{documents.map((doc, i) => <Card key={i} hover className="p-4"><div className="flex items-center gap-4"><div className={`p-2 rounded-xl ${doc.status === 'verified' ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'}`}><doc.icon size={20} /></div><div className="flex-1"><h4 className="font-medium text-gray-900">{doc.name}</h4>{doc.expiry && <p className="text-sm text-gray-500">Expires: {doc.expiry}</p>}</div><Badge variant={doc.status === 'verified' ? 'success' : 'warning'}>{doc.status}</Badge></div></Card>)}<Button variant="outline" icon={Upload} className="w-full">Upload New Document</Button></div>}
+      {activeTab === 'applications' && <div className="space-y-3">{applications.map((app, i) => <Card key={i} className="p-4"><div className="flex items-start justify-between"><div><h4 className="font-medium text-gray-900">{app.program}</h4><p className="text-sm text-gray-500">{app.agency}</p></div><Badge variant={app.status === 'approved' ? 'success' : app.status === 'pending' ? 'warning' : 'primary'}>{app.status}</Badge></div><div className="mt-3 flex items-center justify-between text-sm"><span className="text-gray-500">Applied: {app.date}</span><button className="text-emerald-600 font-medium">View Details →</button></div></Card>)}</div>}
+      {activeTab === 'identity' && <div className="space-y-4"><Card className="p-4"><h4 className="font-medium text-gray-900 mb-3">Privacy Controls</h4><div className="space-y-3">{['Government Agencies', 'NGO Partners', 'Employers'].map((entity) => <div key={entity} className="flex items-center justify-between"><span className="text-gray-700">{entity}</span><label className="relative inline-flex items-center cursor-pointer"><input type="checkbox" defaultChecked className="sr-only peer" /><div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div></label></div>)}</div></Card><Card className="p-4 bg-emerald-50 border-emerald-200"><div className="flex items-center gap-3"><Lock className="text-emerald-600" size={20} /><div><h4 className="font-medium text-emerald-900">End-to-End Encrypted</h4><p className="text-sm text-emerald-700">Your data is protected with military-grade encryption</p></div></div></Card></div>}
     </div>
   );
 };
@@ -1705,6 +1245,9 @@ const AntiCorruptionModule = () => {
 const CitizenAccountabilityModule = () => {
   const { t, language } = useLanguage();
   const [showCorruptionDetails, setShowCorruptionDetails] = useState(false);
+  const [showPledge, setShowPledge] = useState(false);
+  const [pledgeTaken, setPledgeTaken] = useState(false);
+  const [showPledgeConfirmation, setShowPledgeConfirmation] = useState(false);
   const [integrityScore, setIntegrityScore] = useState(mockStats.integrityScore);
   
   // Mock data for flags - adjusted to reflect 78% integrity score
@@ -1714,8 +1257,48 @@ const CitizenAccountabilityModule = () => {
     totalInteractions: 127
   };
 
+  const handleTakePledge = () => {
+    setPledgeTaken(true);
+    setIntegrityScore(prevScore => Math.min(prevScore + 5, 100)); // Add 5 points, max 100
+    setShowPledge(false);
+    setShowPledgeConfirmation(true);
+    // Auto-hide confirmation after 5 seconds
+    setTimeout(() => {
+      setShowPledgeConfirmation(false);
+    }, 5000);
+  };
+
   return (
     <div className="space-y-6">
+      {/* Pledge Confirmation Banner */}
+      {showPledgeConfirmation && (
+        <div className="fixed top-20 left-0 right-0 z-40 px-4 animate-fade-in">
+          <div className="max-w-lg mx-auto">
+            <Card className="p-4 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white border-emerald-500 shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <CheckCircle className="text-white" size={28} />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-lg">{language === 'en' ? 'Pledge Confirmed!' : 'Nakumpirma ang Pangako!'}</h4>
+                  <p className="text-sm text-emerald-100">
+                    {language === 'en' 
+                      ? 'You are now part of the Integrity Network. +5 points added to your score!' 
+                      : 'Kayo ay bahagi na ng Integrity Network. +5 puntos ang naidagdag sa inyong score!'}
+                  </p>
+                </div>
+                <button 
+                  onClick={() => setShowPledgeConfirmation(false)}
+                  className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center flex-shrink-0"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </Card>
+          </div>
+        </div>
+      )}
+
       {/* Verified Activity Level Card */}
       <Card className="p-6 bg-gradient-to-br from-emerald-800 to-emerald-900 text-white">
         <div className="text-center">
@@ -1733,11 +1316,11 @@ const CitizenAccountabilityModule = () => {
         </div>
       </Card>
 
-      {/* How Activity Level Works */}
+      {/* How Integrity Score Works */}
       <Card className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-indigo-200">
         <h4 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
           <Shield size={20} />
-          {language === 'en' ? 'How Your Activity Level Works' : 'Paano Gumagana ang Iyong Activity Level'}
+          {t.howIntegrityWorks}
         </h4>
         <div className="space-y-3 text-sm">
           <div className="flex items-start gap-3">
@@ -1954,267 +1537,267 @@ const CitizenAccountabilityModule = () => {
         )}
       </Card>
 
+      {/* Integrity Pledge */}
+      <Card className={`p-4 ${pledgeTaken ? 'bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-300' : ''}`}>
+        <div className="text-center">
+          {pledgeTaken ? (
+            <>
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="text-white" size={32} />
+              </div>
+              <Badge variant="success" className="mb-2">
+                {language === 'en' ? 'Pledge Taken' : 'Natapos ang Pangako'}
+              </Badge>
+              <h4 className="font-semibold text-gray-900 mt-2">{language === 'en' ? 'Integrity Pledge Member' : 'Miyembro ng Integrity Pledge'}</h4>
+              <p className="text-sm text-gray-600 mt-1">
+                {language === 'en' 
+                  ? 'Thank you for committing to a corruption-free Philippines!' 
+                  : 'Salamat sa inyong pangako para sa walang korupsyong Pilipinas!'}
+              </p>
+              <div className="mt-4 p-3 bg-white rounded-xl border border-emerald-200">
+                <div className="flex items-center justify-center gap-2 text-emerald-800">
+                  <Award size={20} />
+                  <span className="font-semibold">{language === 'en' ? 'Integrity Score Boosted!' : 'Tumaas ang Integrity Score!'}</span>
+                </div>
+                <p className="text-xs text-gray-600 mt-1">+5 {language === 'en' ? 'points added' : 'puntos ang naidagdag'}</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <Award className="mx-auto text-emerald-600" size={40} />
+              <h4 className="font-semibold text-gray-900 mt-3">Take the Integrity Pledge</h4>
+              <p className="text-sm text-gray-500 mt-1">Join 50,000+ citizens committed to corruption-free Philippines</p>
+              <Button 
+                className="mt-4 w-full"
+                onClick={() => setShowPledge(true)}
+              >
+                I Pledge to Stay in Line
+              </Button>
+            </>
+          )}
+        </div>
+      </Card>
+
+      {/* Pledge Modal */}
+      {showPledge && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setShowPledge(false)}>
+          <Card className="max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 bg-white p-4 border-b border-gray-100 flex items-center justify-between">
+              <h3 className="text-xl font-bold text-gray-900">{t.linyaIntegrityPledge}</h3>
+              <button 
+                onClick={() => setShowPledge(false)}
+                className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-6">
+              {pledgeTaken ? (
+                <>
+                  {/* Already Taken View */}
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle className="text-white" size={48} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">
+                      {language === 'en' ? 'Pledge Already Taken!' : 'Natapos Na ang Pangako!'}
+                    </h4>
+                    <p className="text-gray-600 mb-4">
+                      {language === 'en' 
+                        ? 'You are already a member of the Integrity Network.' 
+                        : 'Kayo ay miyembro na ng Integrity Network.'}
+                    </p>
+                    <Badge variant="success" size="md" className="mb-6">
+                      {language === 'en' ? 'Active Member Since Today' : 'Aktibong Miyembro Mula Ngayon'}
+                    </Badge>
+                  </div>
+
+                  {/* Show the pledge they took */}
+                  <div className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-6">
+                    <h5 className="font-semibold text-emerald-900 mb-3 text-center">
+                      {language === 'en' ? 'Your Pledge' : 'Ang Inyong Pangako'}
+                    </h5>
+                    <p className="text-sm text-gray-700 text-center italic">
+                      {t.pledgeClosing}
+                    </p>
+                  </div>
+
+                  <Button 
+                    variant="primary" 
+                    className="w-full"
+                    onClick={() => setShowPledge(false)}
+                  >
+                    {language === 'en' ? 'Close' : 'Isara'}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  {/* Pledge Header */}
+                  <div className="text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Award className="text-white" size={40} />
+                </div>
+                <h4 className="text-lg font-semibold text-gray-900">{language === 'tl' ? 'Ang Aking Pangako' : 'My Commitment'}</h4>
+                <p className="text-sm text-gray-600 mt-1">{t.myCommitment}</p>
+              </div>
+
+              {/* Pledge Content */}
+              <div className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-6 space-y-4">
+                <p className="text-gray-800 leading-relaxed">
+                  {t.pledgeIntro}
+                </p>
+
+                <div className="space-y-3">
+                  <div className="flex gap-3">
+                    <CheckCircle className="text-emerald-600 flex-shrink-0 mt-1" size={20} />
+                    <p className="text-sm text-gray-700">
+                      {t.pledgeNoBribes}
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <CheckCircle className="text-emerald-600 flex-shrink-0 mt-1" size={20} />
+                    <p className="text-sm text-gray-700">
+                      {t.pledgeReport}
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <CheckCircle className="text-emerald-600 flex-shrink-0 mt-1" size={20} />
+                    <p className="text-sm text-gray-700">
+                      {t.pledgeRefuse}
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <CheckCircle className="text-emerald-600 flex-shrink-0 mt-1" size={20} />
+                    <p className="text-sm text-gray-700">
+                      {t.pledgeDemand}
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <CheckCircle className="text-emerald-600 flex-shrink-0 mt-1" size={20} />
+                    <p className="text-sm text-gray-700">
+                      {t.pledgeSupport}
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <CheckCircle className="text-emerald-600 flex-shrink-0 mt-1" size={20} />
+                    <p className="text-sm text-gray-700">
+                      {t.pledgeVerify}
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <CheckCircle className="text-emerald-600 flex-shrink-0 mt-1" size={20} />
+                    <p className="text-sm text-gray-700">
+                      {t.pledgeMaintain}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t-2 border-emerald-300">
+                  <p className="text-gray-800 italic leading-relaxed">
+                    {t.pledgeClosing}
+                  </p>
+                </div>
+              </div>
+
+              {/* Benefits of Taking the Pledge */}
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+                <h5 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                  <Star className="text-blue-600" size={20} />
+                  {t.benefitsOfPledge}
+                </h5>
+                <ul className="space-y-2 text-sm text-blue-800">
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                    {t.benefitBadge}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                    {t.benefitBoost}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                    {t.benefitNetwork}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                    {t.benefitSupport}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                    {t.benefitRecognition}
+                  </li>
+                </ul>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <Button className="w-full" icon={Shield} onClick={handleTakePledge}>
+                  {t.iTakeThisPledge}
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => setShowPledge(false)}
+                >
+                  {t.readAgainLater}
+                </Button>
+              </div>
+
+              {/* Fine Print */}
+              <p className="text-xs text-gray-500 text-center">
+                {t.pledgeFinePrint}
+              </p>
+                </>
+              )}
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
 
 
 
-// Dashboard Module - Reddit-style Crime Feed
+// Dashboard Module
 const DashboardModule = () => {
-  const { t, language } = useLanguage();
-  const [sortBy, setSortBy] = useState('recent'); // recent, hot, top
-  const [filterStatus, setFilterStatus] = useState('all'); // all, new, investigating, verified, resolved
-  const [expandedPost, setExpandedPost] = useState(null);
-
-  // Get all reports from localStorage and merge with mock data
-  const getStoredReports = () => {
-    try {
-      const stored = localStorage.getItem('linya_reports');
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  };
-
-  const allReports = [...mockReports, ...getStoredReports()];
-
-  // Filter and sort reports
-  const filteredReports = allReports.filter(report => {
-    if (filterStatus === 'all') return true;
-    return report.status === filterStatus;
-  });
-
-  const sortedReports = [...filteredReports].sort((a, b) => {
-    if (sortBy === 'hot') {
-      return (b.redFlags + b.greenFlags) - (a.redFlags + a.greenFlags);
-    } else if (sortBy === 'top') {
-      return b.redFlags - a.redFlags;
-    }
-    // Default: recent
-    return new Date(b.date) - new Date(a.date);
-  });
-
-  const getStatusColor = (status) => {
-    const colors = {
-      new: 'bg-blue-100 text-blue-800 border-blue-200',
-      investigating: 'bg-amber-100 text-amber-800 border-amber-200',
-      verified: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-      resolved: 'bg-gray-100 text-gray-800 border-gray-200'
-    };
-    return colors[status] || colors.new;
-  };
-
-  const getStatusLabel = (status) => {
-    const labels = {
-      new: language === 'en' ? 'New' : 'Bago',
-      investigating: language === 'en' ? 'Investigating' : 'Sinisiyasat',
-      verified: language === 'en' ? 'Verified' : 'Napatunayan',
-      resolved: language === 'en' ? 'Resolved' : 'Naayos'
-    };
-    return labels[status] || status;
-  };
-
-  const handleVote = (reportId, voteType) => {
-    // Vote logic would go here
-    console.log(`Voted ${voteType} on report ${reportId}`);
-  };
-
+  const { t } = useLanguage();
   return (
-    <div className="space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">
-            {language === 'en' ? 'Crime Reports Feed' : 'Feed ng mga Ulat'}
-          </h2>
-          <p className="text-gray-500 text-sm">
-            {language === 'en' ? 'Community-reported incidents' : 'Mga ulat mula sa komunidad'}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-600">{sortedReports.length}</span>
-          <AlertTriangle size={20} className="text-red-600" />
-        </div>
-      </div>
-
-      {/* Sort & Filter Tabs */}
-      <Card className="p-3">
-        <div className="flex items-center gap-2 mb-3">
-          <button
-            onClick={() => setSortBy('recent')}
-            className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-              sortBy === 'recent' ? 'bg-emerald-800 text-white' : 'bg-gray-100 text-gray-700'
-            }`}
-          >
-            {language === 'en' ? 'Recent' : 'Bago'}
-          </button>
-          <button
-            onClick={() => setSortBy('hot')}
-            className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-              sortBy === 'hot' ? 'bg-emerald-800 text-white' : 'bg-gray-100 text-gray-700'
-            }`}
-          >
-            {language === 'en' ? 'Hot' : 'Mainit'}
-          </button>
-          <button
-            onClick={() => setSortBy('top')}
-            className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-              sortBy === 'top' ? 'bg-emerald-800 text-white' : 'bg-gray-100 text-gray-700'
-            }`}
-          >
-            {language === 'en' ? 'Top' : 'Top'}
-          </button>
-        </div>
-        
-        {/* Status Filter */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {['all', 'new', 'investigating', 'verified', 'resolved'].map(status => (
-            <button
-              key={status}
-              onClick={() => setFilterStatus(status)}
-              className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
-                filterStatus === status
-                  ? 'bg-emerald-800 text-white'
-                  : 'bg-gray-100 text-gray-600'
-              }`}
-            >
-              {status === 'all' ? (language === 'en' ? 'All' : 'Lahat') : getStatusLabel(status)}
-            </button>
-          ))}
-        </div>
-      </Card>
-
-      {/* Crime Feed */}
-      <div className="space-y-3">
-        {sortedReports.map((report) => (
-          <Card key={report.id} className="overflow-hidden hover:shadow-md transition-all">
-            {/* Post Header */}
-            <div className="p-3 border-b border-gray-100">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">
-                      {report.anonymous ? '?' : report.author?.[0] || 'A'}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      {report.anonymous ? (language === 'en' ? 'Anonymous' : 'Anonymous') : report.author}
-                    </p>
-                    <p className="text-xs text-gray-500">{report.timeAgo || report.date}</p>
-                  </div>
-                </div>
-                <div className={`px-2 py-1 rounded-lg border text-xs font-medium ${getStatusColor(report.status)}`}>
-                  {getStatusLabel(report.status)}
-                </div>
-              </div>
-              
-              {/* Location */}
-              <div className="flex items-center gap-1 text-xs text-gray-500">
-                <MapPin size={12} />
-                <span>{report.location}</span>
-              </div>
+    <div className="space-y-6">
+      <div><h2 className="text-2xl font-bold text-gray-900">{t.greeting}</h2><p className="text-gray-500">{t.communityHappening}</p></div>
+      <div className="grid grid-cols-2 gap-3"><StatCard icon={Heart} label={t.aidDistributed} value={mockStats.aidDistributed} trend="+15%" trendUp /><StatCard icon={Users} label={t.beneficiaries} value={mockStats.beneficiaries.toLocaleString()} trend="+8%" trendUp /><StatCard icon={Building} label={t.shelterBeds} value={mockStats.shelterBeds} trend="-5%" trendUp={false} /><StatCard icon={Target} label={t.verifiedActivityLevel} value={`${mockStats.integrityScore}%`} trend="+3%" trendUp /></div>
+      <Card className="p-4 bg-blue-50 border-blue-200">
+        <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+          <Shield size={18} />
+          {t.verifiedActivityLevel}
+        </h4>
+        <p className="text-sm text-blue-800 mb-3">{t.activityBasedOn}</p>
+        <div className="grid grid-cols-3 gap-2 text-xs">
+          <div className="bg-white rounded-lg p-2 text-center">
+            <div className="font-bold text-lg text-emerald-600">
+              {(localStorage.getItem('linya_reports') ? JSON.parse(localStorage.getItem('linya_reports')).length : 0)}
             </div>
-
-            {/* Post Content */}
-            <div className="p-3">
-              <h3 className="font-bold text-gray-900 mb-2">{report.title}</h3>
-              <p className={`text-sm text-gray-700 ${expandedPost === report.id ? '' : 'line-clamp-2'}`}>
-                {report.description}
-              </p>
-              {report.description.length > 150 && (
-                <button
-                  onClick={() => setExpandedPost(expandedPost === report.id ? null : report.id)}
-                  className="text-xs text-emerald-600 font-medium mt-1"
-                >
-                  {expandedPost === report.id 
-                    ? (language === 'en' ? 'Show less' : 'Ikli') 
-                    : (language === 'en' ? 'Read more' : 'Basahin pa')}
-                </button>
-              )}
-            </div>
-
-            {/* Vote & Engagement Bar */}
-            <div className="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                {/* Red Flag (Upvote) */}
-                <button
-                  onClick={() => handleVote(report.id, 'red')}
-                  className="flex items-center gap-1 group"
-                >
-                  <div className="p-1.5 rounded-lg bg-red-100 text-red-600 group-hover:bg-red-200 transition-all">
-                    <Flag size={16} />
-                  </div>
-                  <span className="text-sm font-bold text-red-600">{report.redFlags}</span>
-                </button>
-
-                {/* Green Flag (Resolved/Support) */}
-                <button
-                  onClick={() => handleVote(report.id, 'green')}
-                  className="flex items-center gap-1 group"
-                >
-                  <div className="p-1.5 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-200 transition-all">
-                    <CheckCircle size={16} />
-                  </div>
-                  <span className="text-sm font-bold text-green-600">{report.greenFlags}</span>
-                </button>
-
-                {/* Comments */}
-                <button className="flex items-center gap-1 group">
-                  <div className="p-1.5 rounded-lg bg-gray-200 text-gray-600 group-hover:bg-gray-300 transition-all">
-                    <MessageCircle size={16} />
-                  </div>
-                  <span className="text-sm font-medium text-gray-600">{report.commentCount || 0}</span>
-                </button>
-              </div>
-
-              {/* Verified Badge */}
-              {report.verified && (
-                <div className="flex items-center gap-1 text-xs text-emerald-600">
-                  <ShieldCheck size={14} />
-                  <span className="font-medium">{language === 'en' ? 'Verified' : 'Verified'}</span>
-                </div>
-              )}
-            </div>
-          </Card>
-        ))}
-      </div>
-
-      {/* Empty State */}
-      {sortedReports.length === 0 && (
-        <Card className="p-8 text-center">
-          <AlertTriangle size={48} className="mx-auto text-gray-400 mb-3" />
-          <p className="text-gray-600 font-medium">
-            {language === 'en' ? 'No reports found' : 'Walang nahanap na ulat'}
-          </p>
-          <p className="text-sm text-gray-500 mt-1">
-            {language === 'en' ? 'Try adjusting your filters' : 'Subukan baguhin ang iyong filter'}
-          </p>
-        </Card>
-      )}
-
-      {/* Quick Stats Footer */}
-      <Card className="p-4 bg-gradient-to-br from-emerald-50 to-blue-50">
-        <div className="grid grid-cols-3 gap-3 text-center">
-          <div>
-            <p className="text-2xl font-bold text-emerald-800">{allReports.length}</p>
-            <p className="text-xs text-gray-600">{language === 'en' ? 'Total Reports' : 'Kabuuang Ulat'}</p>
+            <div className="text-gray-600">Reports</div>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-amber-800">
-              {allReports.filter(r => r.status === 'investigating').length}
-            </p>
-            <p className="text-xs text-gray-600">{language === 'en' ? 'Investigating' : 'Sinisiyasat'}</p>
+          <div className="bg-white rounded-lg p-2 text-center">
+            <div className="font-bold text-lg text-blue-600">0</div>
+            <div className="text-gray-600">Corroborate</div>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-green-800">
-              {allReports.filter(r => r.status === 'resolved').length}
-            </p>
-            <p className="text-xs text-gray-600">{language === 'en' ? 'Resolved' : 'Naayos'}</p>
+          <div className="bg-white rounded-lg p-2 text-center">
+            <div className="font-bold text-lg text-purple-600">0</div>
+            <div className="text-gray-600">Documents</div>
           </div>
         </div>
       </Card>
+      <Card className="p-4"><h4 className="font-semibold text-gray-900 mb-3">{t.budgetTransparency}</h4><div className="space-y-3">{[{ label: 'Homeless Services', allocated: 45.2, spent: 38.5 }, { label: 'Shelter Operations', allocated: 28.0, spent: 27.2 }, { label: 'Feeding Programs', allocated: 15.8, spent: 14.1 }].map((item, i) => <div key={i}><div className="flex justify-between text-sm mb-1"><span className="text-gray-600">{item.label}</span><span className="font-medium">₱{item.spent}M / ₱{item.allocated}M</span></div><div className="w-full bg-gray-200 rounded-full h-2"><div className="bg-emerald-600 h-2 rounded-full" style={{ width: `${(item.spent / item.allocated) * 100}%` }} /></div></div>)}</div><Button variant="ghost" size="sm" className="w-full mt-3">{t.viewFullBudget}</Button></Card>
+      <div className="grid grid-cols-4 gap-3">{[{ icon: MapPin, label: t.findHelp, color: 'bg-blue-100 text-blue-600' }, { icon: Flag, label: t.report, color: 'bg-red-100 text-red-600' }, { icon: FileText, label: t.documents, color: 'bg-purple-100 text-purple-600' }, { icon: UserCheck, label: t.identity, color: 'bg-green-100 text-green-600' }].map((action) => <button key={action.label} className="flex flex-col items-center gap-2 p-3"><div className={`w-12 h-12 rounded-xl flex items-center justify-center ${action.color}`}><action.icon size={24} /></div><span className="text-xs font-medium text-gray-600">{action.label}</span></button>)}</div>
     </div>
   );
 };
