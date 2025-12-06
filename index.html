@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1B4D3E">
+  <meta name="description" content="LiNYA - Linis na Yaman ng Bayan. Creating mutual accountability in Philippine society.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>LiNYA - Linis na Yaman ng Bayan</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; background: #FAF9F7; }
+    #root { min-height: 100vh; min-height: 100dvh; }
+    .loader { width: 48px; height: 48px; border: 4px solid #1B4D3E; border-bottom-color: transparent; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
+    @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    #loading-screen { position: fixed; inset: 0; background: linear-gradient(135deg, #1B4D3E 0%, #2D6A4F 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.3s ease; }
+    #loading-screen.hidden { opacity: 0; pointer-events: none; }
+    #loading-screen .logo { width: 80px; height: 80px; background: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 800; color: #1B4D3E; margin-bottom: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    #loading-screen .title { color: white; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    #loading-screen .subtitle { color: rgba(255,255,255,0.7); font-size: 14px; }
+    #loading-screen .loader { margin-top: 40px; border-color: white; border-bottom-color: transparent; }
+  </style>
+</head>
+<body>
+  <div id="loading-screen"><div class="logo">L</div><div class="title">LiNYA</div><div class="subtitle">Linis na Yaman ng Bayan</div><span class="loader"></span></div>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script>window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loading-screen').classList.add('hidden'); }, 500); });</script>
+</body>
+</html>

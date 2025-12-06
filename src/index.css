@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #1B4D3E;
+  --color-secondary: #D4A574;
+  --color-accent: #E8B931;
+  --color-danger: #C54B3C;
+  --color-background: #FDF8F3;
+}
+
+html { scroll-behavior: smooth; }
+body { @apply antialiased; background-color: var(--color-background); }
+
+@layer utilities {
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0); }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+}
+
+button:active { transform: scale(0.98); }
+button:focus-visible { @apply outline-none ring-2 ring-emerald-500 ring-offset-2; }
+
+.bg-gradient-primary { background: linear-gradient(135deg, #1B4D3E 0%, #2D6A4F 100%); }
+.glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
