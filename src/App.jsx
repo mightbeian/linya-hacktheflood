@@ -1977,7 +1977,20 @@ const DashboardModule = () => {
     }
   };
 
-  const allReports = [...mockReports, ...getStoredReports()];
+  const storedReports = getStoredReports().map(report => ({
+    ...report,
+    redFlags: report.redFlags || 0,
+    greenFlags: report.greenFlags || 0,
+    commentCount: report.commentCount || 0,
+    timeAgo: report.timeAgo || 'Just now',
+    verified: report.verified || false,
+    anonymous: report.anonymous !== false,
+    author: report.author || 'Anonymous',
+    description: report.description || report.narrative || '',
+    title: report.title || 'Untitled Report'
+  }));
+
+  const allReports = [...mockReports, ...storedReports];
 
   // Filter and sort reports
   const filteredReports = allReports.filter(report => {
@@ -1987,12 +2000,16 @@ const DashboardModule = () => {
 
   const sortedReports = [...filteredReports].sort((a, b) => {
     if (sortBy === 'hot') {
-      return (b.redFlags + b.greenFlags) - (a.redFlags + a.greenFlags);
+      const aScore = (a.redFlags || 0) + (a.greenFlags || 0);
+      const bScore = (b.redFlags || 0) + (b.greenFlags || 0);
+      return bScore - aScore;
     } else if (sortBy === 'top') {
-      return b.redFlags - a.redFlags;
+      return (b.redFlags || 0) - (a.redFlags || 0);
     }
-    // Default: recent
-    return new Date(b.date) - new Date(a.date);
+    // Default: recent - handle invalid dates
+    const aDate = a.date ? new Date(a.date).getTime() : 0;
+    const bDate = b.date ? new Date(b.date).getTime() : 0;
+    return bDate - aDate;
   });
 
   const getStatusColor = (status) => {
@@ -2120,10 +2137,15 @@ const DashboardModule = () => {
             {/* Post Content */}
             <div className="p-3">
               <h3 className="font-bold text-gray-900 mb-2">{report.title}</h3>
-              <p className={`text-sm text-gray-700 ${expandedPost === report.id ? '' : 'line-clamp-2'}`}>
+              <p className="text-sm text-gray-700" style={expandedPost === report.id ? {} : { 
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden'
+              }}>
                 {report.description}
               </p>
-              {report.description.length > 150 && (
+              {report.description && report.description.length > 150 && (
                 <button
                   onClick={() => setExpandedPost(expandedPost === report.id ? null : report.id)}
                   className="text-xs text-emerald-600 font-medium mt-1"
